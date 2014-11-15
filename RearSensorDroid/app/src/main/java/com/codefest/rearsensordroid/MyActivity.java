@@ -4,14 +4,20 @@ import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioTrack;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,6 +34,15 @@ import java.util.UUID;
 
 public class MyActivity extends ListActivity {
 
+
+    private final int duration = 1; // seconds
+    private final int sampleRate = 8000;
+    private final int numSamples = duration * sampleRate;
+    private final double sample[] = new double[numSamples];
+    private final double freqOfTone = 500; // hz
+
+    private final byte generatedSnd[] = new byte[2 * numSamples];
+
     private Button btToggle;
     private ArrayAdapter<String> mArrayAdapter;
     private BluetoothAdapter mBluetoothAdapter;
@@ -35,11 +50,34 @@ public class MyActivity extends ListActivity {
     private ArrayList<BluetoothDevice> btDeviceArray = new ArrayList<BluetoothDevice>();
     private ConnectAsyncTask connectAsyncTask;
     private ConnectedThread contecThread;
+    TextView distancia;
 
+    private String buffer = "";
+
+    private Handler soundHandler = new Handler();
+    Thread thread;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Use a new tread as this can take a while
+        thread = new Thread(new Runnable() {
+            public void run() {
+                genTone();
+                soundHandler.post(new Runnable() {
+
+                    public void run() {
+                        playSound();
+                    }
+                });
+            }
+        });
+
+
+
+        distancia = (TextView) findViewById(R.id.distancia);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         mArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
         setListAdapter(mArrayAdapter);
@@ -180,6 +218,7 @@ public class MyActivity extends ListActivity {
                     bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
                     for (int i = begin; i < bytes; i++) {
                         if (buffer[i] == "#".getBytes()[0]) {
+                            thread.start();
                             mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
                             begin = i + 1;
                             if (i == bytes - 1) {
@@ -211,6 +250,8 @@ public class MyActivity extends ListActivity {
     }
 
 
+
+
     Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -222,13 +263,47 @@ public class MyActivity extends ListActivity {
                 case 1:
                     String writeMessage = new String(writeBuf);
                     writeMessage = writeMessage.substring(begin, end);
-//                    Toast.makeText(getApplicationContext(),writeMessage,Toast.LENGTH_LONG).show();
-//
-                    TextView distancia = (TextView) findViewById(R.id.distancia);
-                    distancia.setText(writeMessage);
+                    buffer = buffer +writeMessage;
+                    distancia.setText(buffer);
                     break;
             }
         }
     };
+
+    void genTone(){
+        // fill out the array
+        for (int i = 0; i < numSamples; ++i) {
+            sample[i] = Math.sin(2 * Math.PI * i / (sampleRate/freqOfTone));
+        }
+
+        // convert to 16 bit pcm sound array
+        // assumes the sample buffer is normalised.
+        int idx = 0;
+        for (final double dVal : sample) {
+            // scale to maximum amplitude
+            final short val = (short) ((dVal * 32767));
+            // in 16 bit wav PCM, first byte is the low order byte
+            generatedSnd[idx++] = (byte) (val & 0x00ff);
+            generatedSnd[idx++] = (byte) ((val & 0xff00) >>> 8);
+
+        }
+    }
+
+    void playSound(){
+        final AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                sampleRate, AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, generatedSnd.length,
+                AudioTrack.MODE_STATIC);
+        audioTrack.write(generatedSnd, 0, generatedSnd.length);
+        audioTrack.play();
+    }
+
+    void updateText(String text){
+
+        distancia.setText(text);
+//        distancia.setTextColor();
+
+//        distancia.setTextSize();
+    }
 
 }

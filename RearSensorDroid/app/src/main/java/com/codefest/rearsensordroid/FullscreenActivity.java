@@ -42,6 +42,6 @@ public class FullscreenActivity extends Activity {
                 startActivity(intent);
                 FullscreenActivity.this.finish();
             }
-        }, 3000);
+        }, 2000);
     }
 }
