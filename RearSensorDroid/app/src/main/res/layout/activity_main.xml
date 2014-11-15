@@ -10,17 +10,15 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_bar" />
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="50dp"></ListView>
 
-    <Button
-        android:id="@+id/btToggle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:enabled="false"
-        android:text="Toggle LED" />
 
     <TextView
         android:id="@+id/distancia"
@@ -32,9 +30,6 @@
         android:text="0"
         android:layout_height="wrap_content" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo_bar"/>
+
 
 </LinearLayout>

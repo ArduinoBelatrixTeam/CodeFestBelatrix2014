@@ -43,7 +43,7 @@ public class MyActivity extends ListActivity {
 
     private final byte generatedSnd[] = new byte[2 * numSamples];
 
-    private Button btToggle;
+//    private Button btToggle;
     private ArrayAdapter<String> mArrayAdapter;
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothSocket btSocket;
@@ -110,8 +110,8 @@ public class MyActivity extends ListActivity {
             }
         }
 
-        btToggle = (Button) findViewById(R.id.btToggle);
-        btToggle.setOnClickListener(btToggleOnClickListener);
+//        btToggle = (Button) findViewById(R.id.btToggle);
+//        btToggle.setOnClickListener(btToggleOnClickListener);
 
     }
 
@@ -129,22 +129,6 @@ public class MyActivity extends ListActivity {
 
         @Override
         public void onClick(View v) {
-
-//            OutputStream mmOutStream = null;
-//            InputStream inputStream = null;
-//
-//            try {
-//
-//                if (btSocket.isConnected()) {
-//                    mmOutStream = btSocket.getOutputStream();
-//                    inputStream = btSocket.getInputStream();
-//                    mmOutStream.write(new String("L").getBytes());
-//                    inputStream.read();
-//
-//                }
-//
-//            } catch (IOException e) {
-//            }
             contecThread.write(new String("L").getBytes());
 
         }
@@ -178,7 +162,7 @@ public class MyActivity extends ListActivity {
 
             btSocket = result;
             //Enable Button
-            btToggle.setEnabled(true);
+//            btToggle.setEnabled(true);
             contecThread = new ConnectedThread(btSocket);
             contecThread.start();
 
@@ -264,7 +248,7 @@ public class MyActivity extends ListActivity {
                     String writeMessage = new String(writeBuf);
                     writeMessage = writeMessage.substring(begin, end);
 //                    buffer = buffer +writeMessage;
-                    distancia.setText(writeMessage);
+                    updateText(writeMessage);
                     break;
             }
         }
@@ -299,11 +283,19 @@ public class MyActivity extends ListActivity {
     }
 
     void updateText(String text){
+        text = text.replace("#","").trim();
+        if(text!="") {
+            int value = Integer.valueOf(text);
+            if (value != 0) {
+                distancia.setText(text + " cm");
+                if (value < 40) {
 
-        distancia.setText(text);
-//        distancia.setTextColor();
-
-//        distancia.setTextSize();
+                    distancia.setTextSize(250);
+                } else {
+                    distancia.setTextSize(180);
+                }
+            }
+        }
     }
 
 }
