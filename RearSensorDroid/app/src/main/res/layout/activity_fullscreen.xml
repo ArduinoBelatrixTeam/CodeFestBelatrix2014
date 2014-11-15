@@ -9,9 +9,9 @@
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
    <ImageView
-       android:layout_width="700dp"
-       android:layout_height="100dp"
-       android:layout_gravity="center"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="center_vertical"
        android:src="@drawable/splash"/>
 
     <!-- This FrameLayout insets its children based on system windows using

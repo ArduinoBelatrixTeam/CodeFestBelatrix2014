@@ -55,14 +55,14 @@ public class MyActivity extends ListActivity {
     private String buffer = "";
 
     private Handler soundHandler = new Handler();
-    Thread thread;
+    Thread thread_;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         // Use a new tread as this can take a while
-        thread = new Thread(new Runnable() {
+        thread_ = new Thread(new Runnable() {
             public void run() {
                 genTone();
                 soundHandler.post(new Runnable() {
@@ -218,7 +218,7 @@ public class MyActivity extends ListActivity {
                     bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
                     for (int i = begin; i < bytes; i++) {
                         if (buffer[i] == "#".getBytes()[0]) {
-                            thread.start();
+//                            thread.start();
                             mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
                             begin = i + 1;
                             if (i == bytes - 1) {
@@ -263,8 +263,8 @@ public class MyActivity extends ListActivity {
                 case 1:
                     String writeMessage = new String(writeBuf);
                     writeMessage = writeMessage.substring(begin, end);
-                    buffer = buffer +writeMessage;
-                    distancia.setText(buffer);
+//                    buffer = buffer +writeMessage;
+                    distancia.setText(writeMessage);
                     break;
             }
         }
