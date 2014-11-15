@@ -1,11 +1,11 @@
 package com.codefest.rearsensordroid;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
 import com.codefest.rearsensordroid.util.SystemUiHider;
-
-import java.util.logging.Handler;
 
 
 /**
@@ -27,28 +27,21 @@ public class FullscreenActivity extends Activity {
      */
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
-    private Handler myHandler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen);
-
-//        myHandler= new Handler() {
-//        }
-
-
-
+        Handler handler=new Handler();
+        handler.postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Intent intent = new Intent(FullscreenActivity.this,MyActivity.class);
+                startActivity(intent);
+                FullscreenActivity.this.finish();
+            }
+        }, 3000);
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-
-    }
-
-
-
 }

@@ -7,19 +7,25 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
-    </ListView>
+        android:layout_height="250dp"></ListView>
 
     <Button
         android:id="@+id/btToggle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:text="Toggle LED"/>
+        android:text="Toggle LED" />
+
+    <TextView
+        android:id="@+id/distancia"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:text="0"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
