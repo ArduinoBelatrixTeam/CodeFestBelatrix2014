@@ -60,15 +60,16 @@ void loop()
 {
 
   uS = sonar.ping(); // Send ping, get ping time in microseconds (uS).
-  Serial.println(uS);
+  //Serial.println(uS);
   int distance_calculated = (uS / US_ROUNDTRIP_CM); // Convert ping time to distance in cm and print result (0 = outside set distance range)
   //Serial.println(distance_calculated);
   //String tmp = distance_calculated;
   
   BTSerial.print(distance_calculated);
+  BTSerial.print("#");
   Serial.println(distance_calculated);
   
-  delay(500);  
+  delay(100);  
   
 }
 
