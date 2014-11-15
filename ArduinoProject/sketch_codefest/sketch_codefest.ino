@@ -51,9 +51,7 @@ void setup()
   //BTSerial.begin(38400);
   BTSerial.begin(9600);
   Serial.begin(9600);
-  Serial.println("Enter AT command:");
-
-  BTSerial.print("AT\r\n");
+  
   delay(100);
 
 }
@@ -62,61 +60,15 @@ void loop()
 {
 
   uS = sonar.ping(); // Send ping, get ping time in microseconds (uS).
+  Serial.println(uS);
   int distance_calculated = (uS / US_ROUNDTRIP_CM); // Convert ping time to distance in cm and print result (0 = outside set distance range)
-  String tmp = distance_calculated + "#";
-  /*
-  if (BTSerial.available()) {
-    //Serial.write(BTSerial.read());
-    Serial.write(distance);
-  }
-  if (Serial.available()) {
-    BTSerial.write(Serial.read());
-  }
-  */
-  /*
-  if (BTSerial.available()) {
-    BTSerial.print((uS / US_ROUNDTRIP_CM) + "#");
-  }
-  */
-  //string nuevo = "33";
- char distance[4]; 
-  tmp.toCharArray(distance);
+  //Serial.println(distance_calculated);
+  //String tmp = distance_calculated;
   
-  BTSerial.print(distance);
-  Serial.print(distance);
+  BTSerial.print(distance_calculated);
+  Serial.println(distance_calculated);
   
-  delay(500);
-  /*
-  if (BTSerial.available()) {
-    Serial.println("BTSerial available");
-  }
-  
-  if (Serial.available()) {
-    Serial.println("Serial available");
-    myChar = Serial.read();
-    Serial.print(myChar);
-  }
-  
-  delay(1000);
-  */
-  
-  /*
-  while (BTSerial.available()) {
-    //Serial.println("AT");
-    myChar = BTSerial.read(); 
-    Serial.print(myChar);
-  }
-  */
-  
-  /*
-  while(Serial.available()) {
-    myChar = Serial.read();
-    Serial.print(myChar);
-    BTSerial.print(myChar);
-  }
-  */
-  
-  
+  delay(500);  
   
 }
 
