@@ -30,8 +30,6 @@
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
 SoftwareSerial BTSerial(RxD, TxD);
-//char myChar;
-//char distance[1]; // Centimeters
 unsigned int uS; // Microseconds
 
 void setup()
@@ -48,28 +46,24 @@ void setup()
   
   BTSerial.flush();
   delay(500);
-  //BTSerial.begin(38400);
   BTSerial.begin(9600);
   Serial.begin(9600);
   
   delay(100);
-
 }
 
 void loop()
 {
-
-  uS = sonar.ping(); // Send ping, get ping time in microseconds (uS).
-  //Serial.println(uS);
-  int distance_calculated = (uS / US_ROUNDTRIP_CM); // Convert ping time to distance in cm and print result (0 = outside set distance range)
-  //Serial.println(distance_calculated);
-  //String tmp = distance_calculated;
+  // Send ping, get ping time in microseconds (uS).
+  uS = sonar.ping(); 
+  
+  // Convert ping time to distance in cm and print result (0 = outside set distance range)
+  int distance_calculated = (uS / US_ROUNDTRIP_CM);
   
   BTSerial.print(distance_calculated);
   BTSerial.print("#");
   Serial.println(distance_calculated);
   
-  delay(100);  
-  
+  delay(50);
 }
 
