@@ -1,14 +1,14 @@
 CodeFest Belatrix 2014
 ====================
 
+Rear Sensor Droid for cars with Arduino and Android
+(Sensor de retroceso para autos con Arduino y Android)
+
 Arduino Team:
 - Luis Silva
 - Jose Gramaglia
 - Carlos Monzon
 - Jose Sal y Rosas
-
-Rear Sensor for cars with Arduino and Android
-(Sensor de retroceso para autos con Arduino y Android)
 
 Components:
 - Arduino Uno.
