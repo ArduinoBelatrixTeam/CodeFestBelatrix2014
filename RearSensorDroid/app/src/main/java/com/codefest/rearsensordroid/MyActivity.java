@@ -202,9 +202,9 @@ public class MyActivity extends ListActivity {
         }
     };
 
-    void updateText(String text){
-        text = text.replace("#","").trim();
-        if(text!="") {
+    void updateText(String text) {
+        text = text.replace("#", "").trim();
+        if (text != "") {
             int value = Integer.valueOf(text);
             if (value != 0) {
                 distance.setText(text + " cm");
