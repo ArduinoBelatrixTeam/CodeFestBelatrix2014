@@ -24,3 +24,10 @@ Arduino:
 Source:
 - https://github.com/jalucenyo/Arduino_BT_Android
 - http://geekytheory.com/conectar-android-con-arduino-por-bluetooth-capitulo-1/
+
+LogBack:
+- http://tony19.github.io/logback-android/
+- http://logback.qos.ch/manual/configuration.html
+-Configuration file: \app\src\main\assets\logback.xml
+-Turn off logback logger: <root level="OFF"> ...
+-Logging example: logger.debug("Exception when creating insecure RF socket: " + e.getMessage());
