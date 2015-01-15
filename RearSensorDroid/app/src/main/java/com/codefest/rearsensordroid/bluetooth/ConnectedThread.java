@@ -1,11 +1,11 @@
 package com.codefest.rearsensordroid.bluetooth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Message;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +15,9 @@ import java.io.InputStream;
  * Modified by Luis Silva on 12/20/2014 - Display decoupled to facilitate testing an extensibility
  */
 public class ConnectedThread extends Thread {
+
     private final InputStream mmInStream;
+
     private DisplaySensor displaySensor;
 
     final static Logger logger = LoggerFactory.getLogger(ConnectAsyncTask.class);
@@ -72,9 +74,9 @@ public class ConnectedThread extends Thread {
         }
     };
 
-    void updateText(String text){
-        text = text.replace("#","").trim();
-        if(text!="") {
+    void updateText(String text) {
+        text = text.replace("#", "").trim();
+        if (text != "") {
             displaySensor.display(text);
         }
     }

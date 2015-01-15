@@ -1,9 +1,13 @@
 package com.codefest.rearsensordroid;
 
+import com.codefest.rearsensordroid.bluetooth.ConnectAsyncTask;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import android.app.ListActivity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.codefest.rearsensordroid.bluetooth.ConnectAsyncTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -26,9 +26,13 @@ public class MyActivity extends ListActivity {
 
 
     private ArrayAdapter<String> mArrayAdapter;
+
     private BluetoothAdapter mBluetoothAdapter;
+
     private ArrayList<BluetoothDevice> btDeviceArray = new ArrayList<BluetoothDevice>();
+
     private ConnectAsyncTask connectAsyncTask;
+
     private TextViewDisplaySensor textViewDisplaySensor;
 
     final static Logger logger = LoggerFactory.getLogger(MyActivity.class);
@@ -58,7 +62,8 @@ public class MyActivity extends ListActivity {
         if (mBluetoothAdapter == null) {
             //Device does not support Bluetooth
             logger.info("Device does not support Bluetooth");
-            Toast.makeText(getApplicationContext(), "Not support bluetooth", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Not support bluetooth", Toast.LENGTH_LONG)
+                    .show();
             finish();
         }
 

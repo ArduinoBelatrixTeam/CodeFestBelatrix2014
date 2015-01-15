@@ -1,11 +1,11 @@
 package com.codefest.rearsensordroid.bluetooth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.AsyncTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
@@ -17,10 +17,12 @@ public class ConnectAsyncTask extends AsyncTask<BluetoothDevice, Integer, Blueto
     final static Logger logger = LoggerFactory.getLogger(ConnectAsyncTask.class);
 
     private BluetoothSocket bluetoothSocket;
+
     private ConnectedThread connectedThread;
+
     private DisplaySensor displaySensor;
 
-    public ConnectAsyncTask(DisplaySensor displaySensor){
+    public ConnectAsyncTask(DisplaySensor displaySensor) {
         this.displaySensor = displaySensor;
     }
 
@@ -49,7 +51,7 @@ public class ConnectAsyncTask extends AsyncTask<BluetoothDevice, Integer, Blueto
             logger.info("BlueTooth socket is not null");
             connectedThread = new ConnectedThread(bluetoothSocket, displaySensor);
             connectedThread.start();
-        }else{
+        } else {
             logger.info("BlueTooth socket is null");
         }
     }

@@ -1,11 +1,11 @@
 package com.codefest.rearsensordroid;
 
+import com.codefest.rearsensordroid.util.SystemUiHider;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
-import com.codefest.rearsensordroid.util.SystemUiHider;
 
 
 /**
@@ -15,6 +15,7 @@ import com.codefest.rearsensordroid.util.SystemUiHider;
  * @see SystemUiHider
  */
 public class FullscreenActivity extends Activity {
+
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -32,13 +33,11 @@ public class FullscreenActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen);
-        Handler handler=new Handler();
-        handler.postDelayed(new Runnable()
-        {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
-                Intent intent = new Intent(FullscreenActivity.this,MyActivity.class);
+            public void run() {
+                Intent intent = new Intent(FullscreenActivity.this, MyActivity.class);
                 startActivity(intent);
                 FullscreenActivity.this.finish();
             }
