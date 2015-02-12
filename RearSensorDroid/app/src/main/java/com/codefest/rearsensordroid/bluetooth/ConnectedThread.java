@@ -17,6 +17,8 @@ import java.io.InputStream;
 public class ConnectedThread extends Thread {
 
     private final InputStream mmInStream;
+    private final static int BUFFER_SIZE = 1024;
+    private final static String TOKEN_SEPARATOR = "#";
 
     private DisplaySensor displaySensor;
 
@@ -34,14 +36,14 @@ public class ConnectedThread extends Thread {
     }
 
     public void run() {
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[BUFFER_SIZE];
         int begin = 0;
         int bytes = 0;
         while (true) {
             try {
                 bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
                 for (int i = begin; i < bytes; i++) {
-                    if (buffer[i] == "#".getBytes()[0]) {
+                    if (buffer[i] == TOKEN_SEPARATOR.getBytes()[0]) {
                         mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
                         begin = i + 1;
                         if (i == bytes - 1) {
@@ -49,6 +51,10 @@ public class ConnectedThread extends Thread {
                             begin = 0;
                         }
                     }
+                }
+                if((bytes == BUFFER_SIZE) && (buffer[BUFFER_SIZE-1] != TOKEN_SEPARATOR.getBytes()[0])){
+                    bytes = 0;
+                    begin = 0;
                 }
             } catch (IOException e) {
                 logger.debug("IOException when reading from socket: " + e.getMessage());
