@@ -2,6 +2,9 @@ package com.codefest.rearsensordroid;
 
 import com.codefest.rearsensordroid.bluetooth.DisplaySensor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import android.widget.TextView;
 
 /**
@@ -11,6 +14,8 @@ public class TextViewDisplaySensor implements DisplaySensor {
 
     private TextView distance;
 
+    final static Logger logger = LoggerFactory.getLogger(TextViewDisplaySensor.class);
+
     private static final String DEFAULT_DISPLAY_UNIT = " cm";
 
     TextViewDisplaySensor(TextView distance) {
@@ -19,13 +24,18 @@ public class TextViewDisplaySensor implements DisplaySensor {
 
     @Override
     public void display(String value) {
-        distance.setText(value + DEFAULT_DISPLAY_UNIT);
-        if (Integer.valueOf(value) < 40) {
-            distance.setTextSize(250);
+
+        //to avoid NumberException when setting display size
+        if (value == null || "".equals(value)) {
+            distance.setText("-");
         } else {
-            distance.setTextSize(180);
+            distance.setText(value + DEFAULT_DISPLAY_UNIT);
+            if (Integer.valueOf(value) < 40) {
+                distance.setTextSize(250);
+            } else {
+                distance.setTextSize(180);
+            }
         }
     }
-
 
 }
