@@ -18,7 +18,8 @@ public class ConnectedThread extends Thread {
 
     private final InputStream mmInStream;
     private final static int BUFFER_SIZE = 1024;
-    private final static String TOKEN_SEPARATOR = "#";
+    private final static String CYCLE_SEPARATOR = "#";
+    private final static String SENSOR_SEPARATOR = ",";
 
     private DisplaySensor displaySensor;
 
@@ -41,19 +42,24 @@ public class ConnectedThread extends Thread {
         int bytes = 0;
         while (true) {
             try {
-                bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
-                for (int i = begin; i < bytes; i++) {
-                    if (buffer[i] == TOKEN_SEPARATOR.getBytes()[0]) {
-                        mHandler.obtainMessage(1, begin, i, buffer).sendToTarget();
-                        begin = i + 1;
-                        if (i == bytes - 1) {
+                logger.debug("buffer before read: " + (new String(buffer)) + " / bytes: " + bytes);
+                bytes += mmInStream.read(buffer, bytes, buffer.length - bytes); //Adds bytes to the buffer array
+                logger.debug("buffer after read: " + (new String(buffer)) + " / bytes: " + bytes);
+                for (int i = begin; i < bytes; i++) { //Through the new added bytes
+                    if (buffer[i] == CYCLE_SEPARATOR.getBytes()[0]) { //A complete read of sensors was found (cycle)
+                        mHandler.obtainMessage(1, begin, i, buffer).sendToTarget(); //The cycle is sent to the Handler
+                        //Check if there are no elements for a new cycle
+                        if (i == bytes - 1) { //If there aren't more elements for a new cycle then restart buffer array
                             bytes = 0;
                             begin = 0;
+                        } else{
+                            begin = i + 1; //Set starting point for the next cycle
                         }
                     }
                 }
+                //If we reached the max buffer size value and is not a cycle separator the restart buffer array
                 if((bytes == BUFFER_SIZE) && (buffer[BUFFER_SIZE-1] !=
-                        TOKEN_SEPARATOR.getBytes()[0])){
+                        CYCLE_SEPARATOR.getBytes()[0])){
                     bytes = 0;
                     begin = 0;
                 }

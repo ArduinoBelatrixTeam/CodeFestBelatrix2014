@@ -30,11 +30,7 @@ public class TextViewDisplaySensor implements DisplaySensor {
             distance.setText("-");
         } else {
             distance.setText(value + DEFAULT_DISPLAY_UNIT);
-            if (Integer.valueOf(value) < 40) {
-                distance.setTextSize(250);
-            } else {
-                distance.setTextSize(180);
-            }
+            logger.debug("Text displayed: " + value);
         }
     }
 
